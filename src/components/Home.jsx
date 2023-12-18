@@ -169,6 +169,7 @@ export default function Home() {
             setIsLoading(true);
             const res = await axios.get(`/groups/group-details/${groupId}`); 
             setSelectedGroup(res.data);
+            
             // console.log(res.data.users);
             setUsersList(res.data.users);
             // console.log(usersList);
@@ -218,7 +219,7 @@ export default function Home() {
   </button>
 
   <div className='container-group'>
-    <h2 className='heading-group'>Group Names:</h2>
+    <h2 className='heading-group'>Your Groups:</h2>
     <div className='member-list'>
       <ul className='member-item'>
         {groupList && groupList.map(group => (
@@ -228,7 +229,7 @@ export default function Home() {
         ))}
       </ul>
     </div>
-    <button>
+    <button style={{position:'fixed',bottom:'130px'}}>
       <Link className="link" to="/normalSplit">Normal Split</Link>
     </button>
   </div>
@@ -238,9 +239,14 @@ export default function Home() {
       <div className='form-group'>
         <h2 className='heading'>Select Users</h2>
         <form onSubmit={handleCreateGroup}>
+          
           <input placeholder='Group Name' type='text' value={createdGroupName} onChange={(e) => setCreatedGroupName(e.target.value)} required />
-          {allUsers.map((user) => (
-            <div key={user._id}>
+          <div className='checkbox-div'>
+          <ul className='member-list'>
+            {allUsers.map((user) => (
+              
+            <div key={user._id} className='checkbox'>
+              <li>
               <input
                 type="checkbox"
                 id={user._id}
@@ -249,9 +255,12 @@ export default function Home() {
                 checked={selectedUsers.includes(user._id)}
               />
               <label htmlFor={user._id}>{user.user_name}</label>
+              </li>
             </div>
           ))}
-          <button className='user-button'>Create Group</button>
+          </ul>
+          </div>
+          <button className='user-button' style={{position:'fixed'}}>Create Group</button>
         </form>
       </div>
     ) : (
@@ -260,7 +269,12 @@ export default function Home() {
   </div>
 
   <div className='container'>
-    <h2 className='heading'>{userDetails.user_name}, Add Expense Here:</h2>
+    <h2 className='heading'><label style={{textTransform:'uppercase'}}>{userDetails.user_name}</label>, Add Expense Here:</h2>
+    {selectedGroup &&
+      <div > 
+         <div className='heading'> Group Name :<label style={{textTransform:'uppercase'}}> {selectedGroup.group_name}</label></div>
+         </div>
+      }
     <div>
       <form onSubmit={createBill}>
         <select onChange={updateCreateFormField} value={createForm.payer} name="payer" required>
@@ -276,7 +290,6 @@ export default function Home() {
         <button type='submit'>Add Expense</button>
       </form>
     </div>
-
     {(members.length > 0 && !res) && (
       <div className="member-list">
         <h2>Member List:</h2>
