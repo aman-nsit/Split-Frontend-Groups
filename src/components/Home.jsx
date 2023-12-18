@@ -219,7 +219,9 @@ export default function Home() {
   </button>
 
   <div className='container-group'>
+  <br></br>
     <h2 className='heading-group'>Your Groups:</h2>
+    
     <div className='member-list'>
       <ul className='member-item'>
         {groupList && groupList.map(group => (
@@ -241,12 +243,11 @@ export default function Home() {
         <form onSubmit={handleCreateGroup}>
           
           <input placeholder='Group Name' type='text' value={createdGroupName} onChange={(e) => setCreatedGroupName(e.target.value)} required />
-          <div className='checkbox-div'>
-          <ul className='member-list'>
+          <div className='member-list'>
+          <ul className='member-item'>
             {allUsers.map((user) => (
-              
-            <div key={user._id} className='checkbox'>
               <li>
+                <div style={{display:'flex',fontWeight:'550'}}>
               <input
                 type="checkbox"
                 id={user._id}
@@ -254,9 +255,9 @@ export default function Home() {
                 onChange={() => handleCheckboxChange(user._id)}
                 checked={selectedUsers.includes(user._id)}
               />
-              <label htmlFor={user._id}>{user.user_name}</label>
+              <div key={user._id} >{user.user_name}</div>
+              </div>
               </li>
-            </div>
           ))}
           </ul>
           </div>
